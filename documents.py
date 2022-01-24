@@ -4,10 +4,10 @@ DOCUMENTS =[
   {"id":2,"title":"Title", "text":"guasa papus  me llamo tuxi el grande",},
 ]
 
-class ducument:
-  def __init__(self,id:int, title:str, autor:str, pub:str, text:str) -> None:
+class document:
+  def __init__(self,id:int, title:str, author:str, pub:str, text:str) -> None:
     self.id = id
     self.title = title.lower()
-    self.autor = autor.lower()
+    self.author = author.lower()
     self.pub = pub.lower()
     self.text = text.lower()
