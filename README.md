@@ -5,7 +5,7 @@ Este repositorio es una api de Flask para brindar servicio de un buscador. El al
 ### Instalar dependencias
 
 ```
-pip install requirements
+pip install -r requirements.txt
 ```
 
 ### Para correr la aplicacion 
