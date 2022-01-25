@@ -1,9 +1,14 @@
 import math
 import nltk
+from documents import document
+from typing import * 
+from collections import defaultdict
 
 class DocumentsHandler:
-    def __init__(self,documents, alpha=0.5):
-        self.documents = documents
+    def __init__(self,documents : List['document'], alpha=0.5):
+        self._global_freq = nltk.FreqDist()
+        self._len = len(documents)
+        self._documents:List['document'] = documents
         self._frec = []
         self._norm_frec = []
         self._calc_freq_in_all_documents()
@@ -11,20 +16,27 @@ class DocumentsHandler:
         pass
 
     def _calc_freq_in_all_documents(self):
-        for d in self.documents:
-            self.add_document(d)        
+        for d in self._documents:
+            self.add_document(d)
             
     #siendo doc un dict
-    def add_document(self,doc):
-        print(doc)
-        tokens = [ s.lower() for s in doc["text"].split() ]
+    def add_document(self,doc:document):
+        #print(doc)
+        tokens = [ s.lower() for s in doc.text.split()]
         freq = nltk.FreqDist(tokens)
         self._frec.append(freq)
 
-        M = freq.max() 
+        #adding matches to global dict
+        for k , v in freq.items():
+            self._global_freq[k] += v
+
         norm_frec = {}
-        for k,v in freq.items():
-            norm_frec[k] = v / freq[M]
+        try:
+            M = freq.max() 
+            for k,v in freq.items():
+                norm_frec[k] = v / freq[M]
+        except Exception:
+            pass
         self._norm_frec.append(norm_frec)
 
     def _calc_normalized_freq(self,freq,term):
@@ -56,9 +68,11 @@ class DocumentsHandler:
         sum2 = 0
         sum3 = 0
         for k,v in freq1.items():
-            sum1 += self.weight(k,doc_index) * self.q_weight(freq1,k)  
-            sum2 += self.weight(k,doc_index)**2
-            sum3 += self.q_weight(freq1,k)**2
+            doc_weith = self.weight(k,doc_index)
+            qry_weith = self.q_weight(freq1,k)
+            sum1 += doc_weith * qry_weith
+            sum2 += doc_weith **2
+            sum3 += qry_weith **2
         
         # patch
         if (math.sqrt(sum2) + math.sqrt(sum3)) == 0:
@@ -66,19 +80,21 @@ class DocumentsHandler:
 
         return sum1/(math.sqrt(sum2) + math.sqrt(sum3))
 
-    def get_sim(self, q):
+    def get_sim(self, q, quote=0.1) ->List[tuple]:
         sol=[]
-        for i in range(len(self.documents)):
+        for i in range(self._len):
             # ordenar cada documento por orden de relevancia con q 
             value = self.sim(q,i) 
-            sol.append((value, self.documents[i])) 
+            if value > quote:
+                sol.append((value, self._documents[i])) 
         sol.sort(reverse=True,key=lambda t:t[0])    
         return sol
 
     def inverse_document_frequency(self,term : str):
-        frequency =0
-        for d in self.documents:
-            if term in d["text"]:
-                frequency+=1
-        return 0 if frequency==0 else math.log10(len(self.documents)/frequency)
+        # frequency =0
+        # for d in self.documents:
+        #     if term in d.text:
+        #         frequency+=1
+        frequency = self._global_freq[term]
+        return 0 if frequency==0 else math.log10(self._len/frequency)
 
