@@ -1,7 +1,10 @@
 from enum import Enum
+from pprint import pprint
 from typing import * 
 from pathlib import Path
 from documents import document
+from collections import defaultdict
+import typer
 
 class ReadState(Enum):
   NEWFILE = 0
@@ -75,10 +78,53 @@ def build_cran_collection()-> List['document']:
                         pub=" ".join(pub),
                         text= " ".join(text))
                       )
-  
   return docs 
 
-docs = build_cran_collection()
 
-for doc in docs:
-  print(doc.id, ':---:', doc.title[:20],': ---> ' , doc.text[:40])
+
+
+
+def read_cran_query() -> defaultdict:
+  queries_file = Path("./test_collections/cran/cran.qry")
+  relevants_file = Path("./test_collections/cran/cranqrel")
+  if not queries_file.exists():
+    raise typer.Exit(f"{queries_file} does not exist.")
+  if not relevants_file.exists():
+    raise typer.Exit(f"{relevants_file} does not exist.")
+
+  typer.echo('Parsing querys ....')
+  queries = defaultdict(str) 
+  with open(str(queries_file),'r') as qry_f:
+    query_text = []
+    qry_id = None
+    for line in qry_f:
+      if line.startswith('.I'):
+        if query_text:
+          # queries.append(" ".join(query_text))
+          queries[int(qry_id)] = " ".join(query_text)
+          query_text = []
+
+        qry_id = line[3:-1]
+        continue
+      if line.startswith('.W'):
+        continue
+      query_text.append(line.strip())
+    if query_text:
+      queries[int(qry_id)] = " ".join(query_text)
+  return queries
+
+def read_cran_rel() -> defaultdict:
+  relevants_file = Path("./test_collections/cran/cranqrel")
+
+  typer.echo('Parsing relevants ....')
+  relevants = defaultdict(int)
+
+  with open (str(relevants_file),'r')as rel_f:
+    for line in rel_f:
+      query , doc_id, rel = [int(item) for item in line.split()]
+      if query not in relevants : 
+        relevants[query] = [(doc_id,rel)]
+      else:
+        relevants[query].append((doc_id,rel))
+
+  return relevants
