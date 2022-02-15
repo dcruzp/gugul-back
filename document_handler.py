@@ -3,6 +3,9 @@ import nltk
 from documents import document
 from typing import * 
 from collections import defaultdict
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
 
 class DocumentsHandler:
     def __init__(self,documents : List['document'], alpha=0.5):
@@ -22,8 +25,23 @@ class DocumentsHandler:
     #siendo doc un dict
     def add_document(self,doc:document):
         #print(doc)
-        tokens = [ s.lower() for s in doc.text.split()]
-        freq = nltk.FreqDist(tokens)
+        # tokens = [ s.lower() for s in doc.text.split()]
+        tokens = word_tokenize(doc.text)
+
+        # eliminando los stopwords
+        clean_tokens = tokens[:]
+        for token in tokens:
+            if token in stopwords.words('english'):
+                clean_tokens.remove(token)
+
+        #lematizar
+        stemmer_tokens = [] 
+        stemmer = PorterStemmer()
+        for token in clean_tokens:
+            stemmer_tokens.append(stemmer.stem(token))
+        
+
+        freq = nltk.FreqDist(stemmer_tokens)
         self._frec.append(freq)
 
         #adding matches to global dict
