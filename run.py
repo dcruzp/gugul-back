@@ -20,7 +20,7 @@ def SearchQ(q):
     sol = [
         {"value":d[0],"title": d[1].title, "id":d[1].id, "preview":d[1].text[:20]+"..."}
         for d in doc_handler.get_sim(q) 
-        if d[0] != 0
+        #if d[0] != 0
     ]
     
     print(">>>>>>>>>>>>>>", q)
