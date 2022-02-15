@@ -82,8 +82,9 @@ def build_cran_collection()-> List['document']:
 
 
 
-
-
+# esta es para leer todas las querys de los documentos 
+# que hay en el fichero de  querys que esta indexadas 
+# como mismo estan el el documento 
 def read_cran_query() -> defaultdict:
   queries_file = Path("./test_collections/cran/cran.qry")
   relevants_file = Path("./test_collections/cran/cranqrel")
@@ -113,6 +114,8 @@ def read_cran_query() -> defaultdict:
       queries[int(qry_id)] = " ".join(query_text)
   return queries
 
+# esto es para leer las relevancias de cada documento
+# para cada una d elas querys 
 def read_cran_rel() -> defaultdict:
   relevants_file = Path("./test_collections/cran/cranqrel")
 
@@ -128,3 +131,7 @@ def read_cran_rel() -> defaultdict:
         relevants[query].append((doc_id,rel))
 
   return relevants
+
+querys = read_cran_query()
+for k , v in querys.items():
+  print (k, ' -> ', v)

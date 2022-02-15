@@ -2,7 +2,7 @@ from flask import Flask,jsonify
 from time import sleep
 
 from document_handler import DocumentsHandler
-from documents import DOCUMENTS
+# from documents import DOCUMENTS
 from readcrancollection import  build_cran_collection
 
 app = Flask(__name__)
