@@ -106,7 +106,7 @@ class DocumentsHandler:
 
         return sum1/(math.sqrt(sum2) + math.sqrt(sum3))
 
-    def get_sim(self, q, quote=0.1) ->List[tuple]:
+    def get_sim(self, q, quote=0.05) ->List[tuple]:
         sol=[]
         for i in range(self._len):
             # ordenar cada documento por orden de relevancia con q 
