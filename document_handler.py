@@ -1,4 +1,5 @@
 import math
+from re import I
 import nltk
 from documents import document
 from typing import * 
@@ -38,7 +39,7 @@ class DocumentsHandler:
         stemmer_tokens = [] 
         stemmer = PorterStemmer()
         for token in clean_tokens:
-            stemmer_tokens.append(stemmer.stem(token))
+            stemmer_tokens.append(stemmer.stem(token,to_lowercase=True))
         
 
         freq = nltk.FreqDist(stemmer_tokens)
@@ -79,7 +80,14 @@ class DocumentsHandler:
         return (self._alpha + (1-self._alpha)*f) * self.inverse_document_frequency(t)
     
     def sim(self, q, doc_index):
-        tokens = [ s.lower() for s in q.split() ]
+        #tokens = [ s.lower() for s in q.split() ]
+
+        stopws = stopwords.words('english')
+        stemmer = PorterStemmer()
+
+        # tomamos los primitivos de las palabras en minuscula que no esten en las stopwords...
+        tokens = [ stemmer.stem(s,to_lowercase=True) for s in word_tokenize(q) if s not in stopws ] 
+
         freq1 = nltk.FreqDist(tokens)
         
         sum1 = 0
