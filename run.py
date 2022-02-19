@@ -24,7 +24,7 @@ def SearchQ(q):
     ]
     
     print(">>>>>>>>>>>>>>", q)
-    print(sol)
+    print("Results:",len(sol))
 
     
     response = jsonify( sol )

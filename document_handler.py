@@ -1,16 +1,17 @@
 import math
 from re import I
-import nltk
+#import nltk
 from documents import document
 from typing import * 
 from collections import defaultdict
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
+from nltk import FreqDist
 
 class DocumentsHandler:
     def __init__(self,documents : List['document'], alpha=0.5):
-        self._global_freq = nltk.FreqDist()
+        self._global_freq = FreqDist()
         self._len = len(documents)
         self._documents:List['document'] = documents
         self._frec = []
@@ -25,40 +26,27 @@ class DocumentsHandler:
             
     #siendo doc un dict
     def add_document(self,doc:document):
-        #print(doc)
-        # tokens = [ s.lower() for s in doc.text.split()]
-        tokens = word_tokenize(doc.text)
+                
+        tokens = self.prepare_tokens(doc.text)
 
-        # eliminando los stopwords
-        clean_tokens = tokens[:]
-        for token in tokens:
-            if token in stopwords.words('english'):
-                clean_tokens.remove(token)
-
-        #lematizar
-        stemmer_tokens = [] 
-        stemmer = PorterStemmer()
-        for token in clean_tokens:
-            stemmer_tokens.append(stemmer.stem(token,to_lowercase=True))
-        
-
-        freq = nltk.FreqDist(stemmer_tokens)
+        freq = FreqDist(tokens)
         self._frec.append(freq)
 
         #adding matches to global dict
-        for k , v in freq.items():
+        for k, v in freq.items():
             self._global_freq[k] += v
 
         norm_frec = {}
-        try:
-            M = freq.max() 
+
+        if len(freq):
+            M = freq[freq.max()]
             for k,v in freq.items():
-                norm_frec[k] = v / freq[M]
-        except Exception:
-            pass
+                norm_frec[k] = v / M 
+
         self._norm_frec.append(norm_frec)
 
-    def _calc_normalized_freq(self,freq,term):
+
+    def _calc_normalized_freq(self,freq : FreqDist,term):
         
         M = freq.max() 
         return freq[term.lower()]/freq[M]
@@ -80,15 +68,10 @@ class DocumentsHandler:
         return (self._alpha + (1-self._alpha)*f) * self.inverse_document_frequency(t)
     
     def sim(self, q, doc_index):
-        #tokens = [ s.lower() for s in q.split() ]
+        
+        tokens = self.prepare_tokens(q)
 
-        stopws = stopwords.words('english')
-        stemmer = PorterStemmer()
-
-        # tomamos los primitivos de las palabras en minuscula que no esten en las stopwords...
-        tokens = [ stemmer.stem(s,to_lowercase=True) for s in word_tokenize(q) if s not in stopws ] 
-
-        freq1 = nltk.FreqDist(tokens)
+        freq1 = FreqDist(tokens)
         
         sum1 = 0
         sum2 = 0
@@ -106,7 +89,13 @@ class DocumentsHandler:
 
         return sum1/(math.sqrt(sum2) + math.sqrt(sum3))
 
-    def get_sim(self, q, quote=0.05) ->List[tuple]:
+    @staticmethod
+    def prepare_tokens(text):
+        stopws = stopwords.words('english')
+        stemmer = PorterStemmer()
+        return [ stemmer.stem(s,to_lowercase=True) for s in word_tokenize(text) if s not in stopws ] 
+
+    def get_sim(self, q, quote=0.2) ->List[tuple]:
         sol=[]
         for i in range(self._len):
             # ordenar cada documento por orden de relevancia con q 

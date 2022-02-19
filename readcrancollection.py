@@ -109,7 +109,8 @@ def read_cran_query() -> defaultdict:
         continue
       if line.startswith('.W'):
         continue
-      query_text.append(line.strip())
+      if line.strip() != "":
+        query_text.append(line.strip())
     if query_text:
       queries[int(qry_id)] = " ".join(query_text)
   return queries
@@ -132,6 +133,6 @@ def read_cran_rel() -> defaultdict:
 
   return relevants
 
-querys = read_cran_query()
-for k , v in querys.items():
-  print (k, ' -> ', v)
+#querys = read_cran_query()
+#for k , v in querys.items():
+#  print (k, ' -> ', v)
