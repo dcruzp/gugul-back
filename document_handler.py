@@ -16,8 +16,8 @@ class DocumentsHandler:
         self._documents:List['document'] = documents
         self._frec = []
         self._norm_frec = []
-        self._calc_freq_in_all_documents()
         self._alpha = alpha
+        self._calc_freq_in_all_documents()
         pass
 
     def _calc_freq_in_all_documents(self):
@@ -34,11 +34,10 @@ class DocumentsHandler:
 
         #adding matches to global dict
         for k, v in freq.items():
-            self._global_freq[k] += v
+            self._global_freq[k] += 1  # sumamos uno, con esto decimos que en este documento esta ese token... 
 
         norm_frec = {}
-
-        if len(freq):
+        if len(freq) != 0 :
             M = freq[freq.max()]
             for k,v in freq.items():
                 norm_frec[k] = v / M 
@@ -64,8 +63,8 @@ class DocumentsHandler:
         return 0
 
     def q_weight(self,frec ,t):
-        f = self._calc_normalized_freq(frec,t) 
-        return (self._alpha + (1-self._alpha)*f) * self.inverse_document_frequency(t)
+        nf = self._calc_normalized_freq(frec,t) 
+        return (self._alpha + (1-self._alpha)*nf) * self.inverse_document_frequency(t)
     
     def sim(self, q, doc_index):
         
@@ -76,7 +75,7 @@ class DocumentsHandler:
         sum1 = 0
         sum2 = 0
         sum3 = 0
-        for k,v in freq1.items():
+        for k,_ in freq1.items():
             doc_weith = self.weight(k,doc_index)
             qry_weith = self.q_weight(freq1,k)
             sum1 += doc_weith * qry_weith
@@ -110,6 +109,6 @@ class DocumentsHandler:
         # for d in self.documents:
         #     if term in d.text:
         #         frequency+=1
-        frequency = self._global_freq[term]
+        frequency = self._global_freq[term]    # no es en la cantidad de documentos en los que aparece el termino????
         return 0 if frequency==0 else math.log10(self._len/frequency)
 
