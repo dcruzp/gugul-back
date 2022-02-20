@@ -1,5 +1,9 @@
 import math
 from re import I
+from matplotlib.pyplot import text
+
+from numpy import vectorize
+from sklearn import cluster
 #import nltk
 from documents import document
 from typing import * 
@@ -9,15 +13,26 @@ from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk import FreqDist
 
+from sklearn.cluster import KMeans 
+from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
 class DocumentsHandler:
-    def __init__(self,documents : List['document'], alpha=0.5):
+    def __init__(self,documents : List['document'], alpha=0.5, clusters=8):
         self._global_freq = FreqDist()
         self._len = len(documents)
         self._documents:List['document'] = documents
         self._frec = []
         self._norm_frec = []
         self._alpha = alpha
+
+        self._total_clusters=clusters
+        self.vectorizer = CountVectorizer()
+        self.documents_as_vectors = []
         self._calc_freq_in_all_documents()
+        self.clasified_documents = [ [] for _ in range(clusters) ]
+        self.kmeans = None   # instancia del clusterizador kmeans
+        self._clasify_documents() 
+        
         pass
 
     def _calc_freq_in_all_documents(self):
@@ -28,6 +43,8 @@ class DocumentsHandler:
     def add_document(self,doc:document):
                 
         tokens = self.prepare_tokens(doc.text)
+        if len(tokens)!=0:
+            self.vectorizer.fit(tokens)
 
         freq = FreqDist(tokens)
         self._frec.append(freq)
@@ -43,6 +60,18 @@ class DocumentsHandler:
                 norm_frec[k] = v / M 
 
         self._norm_frec.append(norm_frec)
+
+    def _clasify_documents(self):
+
+        self.documents_as_vectors = np.array( [ 
+            self.vectorizer.transform([" ".join(self.prepare_tokens(d.text)) ]).toarray()[0] for d in self._documents 
+        ])
+
+        self.kmeans=KMeans(n_clusters=self._total_clusters,random_state=0).fit(self.documents_as_vectors)
+        #clusters_for_documents=self.kmeans.predict(self.documents_as_vectors)
+        for i in range(self._len):
+            centroid = self.kmeans.predict([self.documents_as_vectors[i]])[0]
+            self.clasified_documents[centroid].append(i)
 
 
     def _calc_normalized_freq(self,freq : FreqDist,term):
@@ -66,9 +95,8 @@ class DocumentsHandler:
         nf = self._calc_normalized_freq(frec,t) 
         return (self._alpha + (1-self._alpha)*nf) * self.inverse_document_frequency(t)
     
-    def sim(self, q, doc_index):
+    def sim(self, tokens, doc_index):
         
-        tokens = self.prepare_tokens(q)
 
         freq1 = FreqDist(tokens)
         
@@ -96,9 +124,13 @@ class DocumentsHandler:
 
     def get_sim(self, q, quote=0.2) ->List[tuple]:
         sol=[]
-        for i in range(self._len):
+
+        tokens = self.prepare_tokens(q)
+        q_as_vector=self.vectorizer.transform([" ".join(tokens)]).toarray()[0]
+        centroid=self.kmeans.predict([q_as_vector])[0]
+        for i in self.clasified_documents[centroid] :
             # ordenar cada documento por orden de relevancia con q 
-            value = self.sim(q,i) 
+            value = self.sim(tokens,i) 
             if value > quote:
                 sol.append((value, self._documents[i])) 
         sol.sort(reverse=True,key=lambda t:t[0])    

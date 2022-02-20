@@ -1,4 +1,6 @@
 from email.utils import quote
+
+from sklearn import cluster
 from readcrancollection import *
 from typing import *
 from document_handler import DocumentsHandler
@@ -6,19 +8,20 @@ from output import DocumentOutput
 
 
 #ver q esta pasando aqui :(
-def tester_cran (quote = 0.5,alpha=0.5):
-  print("Testing Vectorial Model (alpha=",alpha,", quote=",quote,")")
+def tester_cran (quote = 0.45,alpha=0.5, clusters=4):
+  print("Testing Vectorial Model (alpha=",alpha,", quote=",quote,", clusters=",clusters,")")
 
   documents:List['document'] = build_cran_collection()
   queries:defaultdict = read_cran_query()
   relevants: defaultdict = read_cran_rel()
   
-  doc_handler = DocumentsHandler(documents, alpha=alpha)
-
+  doc_handler = DocumentsHandler(documents, alpha=alpha,clusters=clusters)
+  print("Documentos Procesados")
  
   output = DocumentOutput()
   for query_id,query  in queries.items():
     print(query_id, end="                  \r", flush=True)
+    #print(query_id, end=" ", flush=True)
     given_docs = { d[1].id for d in doc_handler.get_sim(query,quote)}   # REC
     if (relevants.__contains__(query_id)):
       given_corr = { item[0] for item in relevants[query_id]}  # REL
@@ -61,11 +64,13 @@ def manual_search():
 
 def main():
 
-  output = tester_cran(quote=0.25)
+  output = tester_cran(clusters=1)
   output.PrintAverages()
-  output = tester_cran(quote=0.45)
+  output = tester_cran(clusters=4)
+  output.PrintAverages()
+  output = tester_cran(clusters=8)
   output.PrintAverages() 
-  output = tester_cran(quote=0.6)
+  output = tester_cran(clusters=16)
   output.PrintAverages() 
 
   #manual_search()
