@@ -14,7 +14,7 @@ class ReadState(Enum):
   TEXT = 4
 
 
-### esto retorna una lista de docuementos
+
 def build_cran_collection()-> List['document']:
 
   docs: List[document] = []
@@ -98,11 +98,14 @@ def read_cran_query() -> defaultdict:
   with open(str(queries_file),'r') as qry_f:
     query_text = []
     qry_id = None
+    trulest_id = 1   # id asociado a la posicion de aparicion 
     for line in qry_f:
       if line.startswith('.I'):
         if query_text:
           # queries.append(" ".join(query_text))
-          queries[int(qry_id)] = " ".join(query_text)
+          #queries[int(qry_id)] = " ".join(query_text)
+          queries[trulest_id] = " ".join(query_text)  # usamos el id asociado a la posicion de aparicion
+          trulest_id+=1
           query_text = []
 
         qry_id = line[3:-1]
@@ -112,6 +115,7 @@ def read_cran_query() -> defaultdict:
       if line.strip() != "":
         query_text.append(line.strip())
     if query_text:
+      #queries[int(qry_id)] = " ".join(query_text)
       queries[int(qry_id)] = " ".join(query_text)
   return queries
 
