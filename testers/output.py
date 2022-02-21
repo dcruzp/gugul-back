@@ -18,7 +18,7 @@ class DocumentOutput:
       NR = self.NR[i]
 
       rrUri = (len(RR | RI)) 
-      rrUnr = (len(RR | NR ))
+      rrUnr = (len(RR | NR))
 
       if rrUri !=0: presition = len(RR)/rrUri
       else: presition = 0
