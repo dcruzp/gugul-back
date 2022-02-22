@@ -2,12 +2,29 @@
 
 Este repositorio es una api de Flask para brindar servicio de un buscador. El algoritmo implementado es el modelo vectorial para establecer la similitud de una query con todos los documentos del corpus.
 
+## Requerimientos técnicos
+
+Para el funcionamiento de la app es necesario tener un navegador web compatible con los estándares de los últimos años. Ademas de Python 3.10 con el siguiente conjunto de dependencias.
+
+```
+Flask
+nltk
+```
+
+Estos pueden ser instalados con los siguientes comando con el archivo requeriments.txt que se provee en la carpeta de la app.
 
 ### Instalar dependencias
 
 ```
 pip install -r requirements.txt
 ```
+
+De la biblioteca nltk es necesario tener instalado los siguientes modelos 
+
+![package1.nltk](report\img\packagesnltk.png)
+![package2.nltk](report\img\packagesnltk2.png)
+
+
 
 ### Para correr la aplicación 
 ```
@@ -64,3 +81,9 @@ Se ha mostrado la arquitectura del modelo vectorial lo suficientemente abierto y
 ### Recomendaciones para trabajos futuros que mejoren la propuesta.
 
 Para mejoras del sistema se propone al integración con algoritmos de `Crawling`. Ademas se puede trabajar en el reconocimiento de entidades que ayuden a una mejor vinculación entre diferentes token de los documentos que guardan relación y pueden brindar mucha información a la hora de determinar el peso de un documento en el ámbito de la búsqueda . También se puede trabajar en correcciones básicas como en interacciones con los usuarios que permitan al sistema saber que tan provechoso le fueron los resultado de la aplicación para una consulta dada, la información recolectada se podría usar para próximas consultas similares o iguales.
+
+
+### Autores
+1. [Daniel de la Cruz Prieto](https://github.com/dcruzp)
+2. [Mauricio Salim Mahmud Sánchez](https://github.com/maux96)
+
