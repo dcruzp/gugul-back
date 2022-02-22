@@ -4,7 +4,7 @@ from matplotlib.pyplot import text
 
 from numpy import vectorize
 from sklearn import cluster
-#import nltk
+
 from documents import document
 from typing import * 
 from collections import defaultdict
@@ -137,10 +137,6 @@ class DocumentsHandler:
         return sol
 
     def inverse_document_frequency(self,term : str):
-        # frequency =0
-        # for d in self.documents:
-        #     if term in d.text:
-        #         frequency+=1
         frequency = self._global_freq[term]    # no es en la cantidad de documentos en los que aparece el termino????
         return 0 if frequency==0 else math.log10(self._len/frequency)
 

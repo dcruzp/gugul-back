@@ -7,3 +7,4 @@
 *.gz
 *.eps
 *.bst
+/test_collections/
