@@ -1,4 +1,4 @@
-# Gugul
+# Manual de usuario
 
 Este repositorio es una api de Flask para brindar servicio de un buscador. El algoritmo implementado es el modelo vectorial para establecer la similitud de una query con todos los documentos del corpus.
 
@@ -9,6 +9,8 @@ Para el funcionamiento de la app es necesario tener un navegador web compatible 
 ```
 Flask
 nltk
+scikit_learn
+numpy
 ```
 
 Estos pueden ser instalados con los siguientes comando con el archivo requeriments.txt que se provee en la carpeta de la app.
@@ -43,40 +45,40 @@ python testers/<name>_tester.py
 
 ### Inicializacion del motor
 
-La aplicacion de Gugul back provee de los servicios a la aplicacion de Gugul front para el funcionamiento del buscador de manera integra. Entonces para inicializar los servicios de Gugul back nos vamos la ruta donde se encuentra la solucion de gugul back y una vez ahi corremos el siguiente comando: 
+La aplicación de Gugul back provee de los servicios a la aplicación de Gugul front para el funcionamiento del buscador de manera integra. Entonces para inicializar los servicios de Gugul back nos vamos la ruta donde se encuentra la solucion de gugul back y una vez ahi corremos el siguiente comando: 
 ```
 python run.py
 ```
-Esto nos va a cargar la aplicacion y va a esperar por la palicacion de Gugul front para brindar los servicios de busqueda. La imagen siguiente muestra como corre en consola esta aplciacion:
+Esto nos va a cargar la aplicación y va a esperar por la palicacion de Gugul front para brindar los servicios de busqueda. La imagen siguiente muestra como corre en consola esta aplciacion:
 
 ![runconsolegugulback](report/img/runconsolegugulback.png)
 
-### Instrucciones para correr la aplicacion de gugul front
+### Instrucciones para correr la aplicación de gugul front
 
-la aplicacion que es interactiva con el usuario , es decir la que interactua de manera grafica con el ususario es la aplicaicon de gugul front que corre en el navegador.
+la aplicación que es interactiva con el usuario , es decir la que interactúa de manera gráfica con el usuario es la aplicación de gugul front que corre en el navegador.
 
-Nos vamos hasta donde esta la raiz de esta aplicacion y una vez ahi , si no se ha corrido nunca la aplicacion hay que escibir unos comandos de inicializacion para que el sistema se intale las cosas necesarias para que la aplicacion levante correcatamente. Es decir se van a intalar todas las dependencias para que al aplciacion de Vue pueda correr sin problema ninguno en nuestra maquina.
+Nos vamos hasta donde esta la raíz de esta aplicación y una vez ahi , si no se ha corrido nunca la aplicación hay que escribir unos comandos de inicialización para que el sistema se instale las cosas necesarias para que la aplicación levante correctamente. Es decir se van a instalar todas las dependencias para que al aplicación de Vue pueda correr sin problema ninguno en nuestra maquina.
 
-Entonces si es la primera ves que se va a correr la aplicacion debemos escribir primero esta comando:
+Entonces si es la primera ves que se va a correr la aplicación debemos escribir primero esta comando:
 ```
 npm install
 ```
-Luego para mostar el server y que la aplicacion levante en nuestro navegador corremos el siguiente comando:
+Luego para montar el server y que la aplicación levante en nuestro navegador corremos el siguiente comando:
 
 ```
 npm run server
 ```
-si todo va bien debe de salir en cosola algo similar a lo que nuestra la siguiente imagen: 
+si todo va bien debe de salir en consola algo similar a lo que nuestra la siguiente imagen: 
 
 ![runconsolegugulfront](report/img/runconsolegugulfront.png)
 
-despues de haber llegado hasta aqui si no se abrio una pagina nueva en el navegadr con la aplicacion , entonces ingresa en una nueva ventane en le navegador la siguiente direccion: 
+después de haber llegado hasta aquí si no se abrió una pagina nueva en el navegador con la aplicación , entonces ingresa en una nueva ventana en le navegador la siguiente dirección: 
 ```
 http://localhost:8080/
 ```
 
 ### Pantalla principal 
-Despues de haber cargado las dos aplicaicones correctamente en el navegador se mostrara una pagina como se muestra en la imagen siguiente:
+Despues de haber cargado las dos aplicaciones correctamente en el navegador se mostrara una pagina como se muestra en la imagen siguiente:
 
 ![mainpage](report/img/mainpage.png)
 
@@ -87,30 +89,30 @@ Si hacemos una busqueda se mostrara en la misma pagina todos los resultados que 
 
 ### Historial 
 
-En la parte superior derecha del navegador (en la pagina principal hay un  apartado donde se puede hacer crick y acceder al historial de querys que el usuario he hecho). Como se muestra en la figura siguiente: 
+En la parte superior derecha del navegador (en la pagina principal hay un  apartado donde se puede hacer click y acceder al historial de querys que el usuario he hecho). Como se muestra en la figura siguiente: 
 ![more](report/img/more.png)
 
-Si se depliega aqui aparece para ir al apartado del historial o al apartado de clear data . como se muestra en esta imagen: 
+Si se despliega aquí aparece para ir al apartado del historial o al apartado de clear data . como se muestra en esta imagen: 
 
 ![banner](report/img/banner.png)
 
-Si se abre el historial aparece una lsita con la fecha en que fue hecha cada query . La pgina se veria algo parecido a omo se muestr ane la siguiente imagen: 
+Si se abre el historial aparece una lista con la fecha en que fue hecha cada query . La pagina se vería algo parecido a como se muestra en la siguiente imagen: 
 
 ![history](report/img/history.png)
 
 ### Crear Data
 
-Para borrar todos los datos que se han buscado podemos accreder desde el apartado de more en la pantalla principal y se borra todo el historial y todos los datos de la palciacion que esta corriendo en ese moemento. debe aparecen una pagina que notifique como se muestra en la siguiente imagen:
+Para borrar todos los datos que se han buscado podemos acceder desde el apartado de more en la pantalla principal y se borra todo el historial y todos los datos de la aplicación que esta corriendo en ese momento. debe aparecen una pagina que notifique como se muestra en la siguiente imagen:
 
 ![clear](report/img/clear.png)
 
 ### Pantalla de detalles
 
-Una vez que se hace una busqueda aparecen una serie de documentos , donde se puede dar clic y eso nos lleva a otra pagina donde se muestra el texto completo del documento que se quiere ver:
+Una vez que se hace una búsqueda aparecen una serie de documentos , donde se puede dar clic y eso nos lleva a otra pagina donde se muestra el texto completo del documento que se quiere ver:
 
 ![showdocument](report/img/showdocument.png)
 
-Si se presiona de nuevo en el boton **Go Back** que aparece de color verde a la derecha entonces se vuelve a la pantalla principal. 
+Si se presiona de nuevo en el botón **Go Back** que aparece de color verde a la derecha entonces se vuelve a la pantalla principal. 
 
 
 
@@ -156,7 +158,7 @@ En `document_handler.py` esta la implementación del sistema. Esta implementaci�
 
 En `documents.py` hay una clase que me representa un documentos para el corpus. Este representación del documento tiene un `id` (que me representa un entero único para identificar el documento) , un `title` el titulo del documento , `author` que me representan los autores del documento, `text` que me representa el cuerpo del documento.
 
-En `run.py` ese encuentra una aplicación de flask sencilla para correr el sistema de recuperacion como un servicio para ser consumido por otra aplicación `Gugul_Front` (que es el UI de la aplicación).
+En `run.py` ese encuentra una aplicación de flask sencilla para correr el sistema de recuperación como un servicio para ser consumido por otra aplicación `Gugul_Front` (que es el UI de la aplicación).
 
 En `README.md` esta este documento con todo las partes de la implementación del sistema y algunas particularidades de esta solución.
 
@@ -171,7 +173,7 @@ Se ha mostrado la arquitectura del modelo vectorial lo suficientemente abierto y
 
 ### Recomendaciones para trabajos futuros que mejoren la propuesta.
 
-Para mejoras del sistema se propone al integración con algoritmos de `Crawling`. Ademas se puede trabajar en el reconocimiento de entidades que ayuden a una mejor vinculación entre diferentes token de los documentos que guardan relación y pueden brindar mucha información a la hora de determinar el peso de un documento en el ámbito de la búsqueda . También se puede trabajar en correcciones básicas como en interacciones con los usuarios que permitan al sistema saber que tan provechoso le fueron los resultado de la aplicación para una consulta dada, la información recolectada se podría usar para próximas consultas similares o iguales.
+Se puede trabajar en el reconocimiento de entidades que ayuden a una mejor vinculación entre diferentes token de los documentos que guardan relación y pueden brindar mucha información a la hora de determinar el peso de un documento en el ámbito de la búsqueda . También se puede trabajar en correcciones básicas como en interacciones con los usuarios que permitan al sistema saber que tan provechoso le fueron los resultado de la aplicación para una consulta dada, la información recolectada se podría usar para próximas consultas similares o iguales.
 
 
 
