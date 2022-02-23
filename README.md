@@ -49,7 +49,7 @@ python run.py
 ```
 Esto nos va a cargar la aplicacion y va a esperar por la palicacion de Gugul front para brindar los servicios de busqueda. La imagen siguiente muestra como corre en consola esta aplciacion:
 
-![runconsolegugulback](report\img\runconsolegugulback.png)
+![runconsolegugulback](report/img/runconsolegugulback.png)
 
 ### Instrucciones para correr la aplicacion de gugul front
 
