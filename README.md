@@ -98,3 +98,41 @@ Para mejoras del sistema se propone al integración con algoritmos de `Crawling`
 ### Autores
 1. [Daniel de la Cruz Prieto](https://github.com/dcruzp)
 2. [Mauricio Salim Mahmud Sánchez](https://github.com/maux96)
+
+
+### Inicializacion del motor
+
+La aplicacion de Gugul back provee de los servicios a la aplicacion de Gugul front para el funcionamiento del buscador de manera integra. Entonces para inicializar los servicios de Gugul back nos vamos la ruta donde se encuentra la solucion de gugul back y una vez ahi corremos el siguiente comando: 
+```
+python run.py
+```
+Esto nos va a cargar la aplicacion y va a esperar por la palicacion de Gugul front para brindar los servicios de busqueda. La imagen siguiente muestra como corre en consola esta aplciacion:
+
+![runconsolegugulback](report\img\runconsolegugulback.png)
+
+### Instrucciones para correr la aplicacion de gugul front
+
+la aplicacion que es interactiva con el usuario , es decir la que interactua de manera grafica con el ususario es la aplicaicon de gugul front que corre en el navegador.
+
+Nos vamos hasta donde esta la raiz de esta aplicacion y una vez ahi , si no se ha corrido nunca la aplicacion hay que escibir unos comandos de inicializacion para que el sistema se intale las cosas necesarias para que la aplicacion levante correcatamente. Es decir se van a intalar todas las dependencias para que al aplciacion de Vue pueda correr sin problema ninguno en nuestra maquina.
+
+Entonces si es la primera ves que se va a correr la aplicacion debemos escribir primero esta comando:
+```
+npm install
+```
+Luego para mostar el server y que la aplicacion levante en nuestro navegador corremos el siguiente comando:
+
+```
+npm run server
+```
+si todo va bien debe de salir en cosola algo similar a lo que nuestra la siguiente imagen: 
+
+![runconsolegugulfront](report/img/runconsolegugulfront.png)
+
+despues de haber llegado hasta aqui si no se abrio una pagina nueva en el navegadr con la aplicacion , entonces ingresa en una nueva ventane en le navegador la siguiente direccion: 
+```
+http://localhost:8080/
+```
+
+### Pantalla principal 
+
