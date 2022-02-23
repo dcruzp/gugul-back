@@ -135,4 +135,6 @@ http://localhost:8080/
 ```
 
 ### Pantalla principal 
+Despues de haber cargado las dos aplicaicones correctamente en el navegador se mostrara una pagina como se muestra en la imagen siguiente: 
 
+![mainpage](report/img/mainpage.png)
